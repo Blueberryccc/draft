@@ -182,17 +182,17 @@ In addition, considering that hardware resources are more scarce than software r
 
 
 \subsection{Control Plane}\label{BB}
-The control plane is composed of three modules: decision module, NF manager and translation module.
+The control plane is composed of three modules: decision module and translation module.
 
-The decision module is responsible for specify NF instances for each incoming flow. The rational of flow allocation is to ensure that switches in path still has sufficient remaining flow space for packets forwarding after installing HNF rules, preserving scalability and flexibility of system. To this end, a two-stage algorithm is contained in decision module that combines static path construction algorithm and dynamic path selection algorithm.
+The decision module is responsible for specifying NF instances for each incoming flow. The rationale of flow allocation is to ensure that switches in path still has sufficient remaining flow space for packets forwarding after installing HNF rules, preserving scalability and flexibility of system. To this end, a two-stage algorithm is contained in decision module that combines static path construction algorithm and dynamic path selection algorithm.
 The static path construction algorithm takes the flows' demands  file as input and calculates the optimal set with k alternative paths for each flow. The candidate set are obtained under a some performance criterion such as having the large capacities or having the shortest number of hops. The static algorithm is only called when the topology changes.
  The dynamic path selection algorithm selects the currently optimal path from the candidate set through dynamic evaluation criteria (such as link load) combined with the impact of the resubmission operation on the system when new flows arrive. 
  The input requirements file defines all possible requests. A request is defined as $<$source IP, destination IP, NF sequence$>$. For the simplicity of implementation, our system uses source-destination IP pairs to determine a flow, but it can be easily extended to other flow definition forms. In the request file, operators can customize NF parameters, such as the threshold of Big Flow Detector.
 %solve the problem of choosing the optimal instance for each request to reduce the extra use of ow table space as much as possible, 
 
-NF manager is responsible for managing state and NF migration. NF manager module provides state location allocation and retrieve for flows to access the right state. Since HNF is  initiated and deleted along with the flow, NF manager module merely pays extra attention to the issue of state acquisition and allocation to new instances during NF migration.
+%NF manager is responsible for managing state and NF migration. NF manager module provides state location allocation and retrieve for flows to access the right state. Since HNF is  initiated and deleted along with the flow, NF manager module merely pays extra attention to the issue of state acquisition and allocation to new instances during NF migration.
 
-Translation module simplifies operator workflow by providing primitives for decision module and NF manager module to translate NF-level commands into flow table rules of data plane.
+Translation module simplifies operator workflow by providing primitives for decision module to translate NF-level commands into flow table rules of data plane.
 
 \subsection{A Packet's Life}
 We then describe the packet processing procedure of STH.As shown in \ref{arch}, the control flow ofSFC table, forward table and corresponding NF table will be proactively installed in data plane as the processing logic of HNF framework.

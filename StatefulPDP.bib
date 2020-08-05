@@ -1,0 +1,162 @@
+@article{Bianchi2014,
+abstract = {Software Defined Networking envisions smart centralized con- trollers governing the forwarding behavior of dumb low- cost switches. But are "dumb" switches an actual strategic choice, or (at least to some extent) are they a consequence of the lack of viable alternatives to OpenFlow as program- matic data plane forwarding interface? Indeed, some level of (programmable) control logic in the switches might be ben- eficial to offload logically centralized controllers (de facto complex distributed systems) from decisions just based on local states (versus network-wide knowledge), which could be handled at wire speed inside the device itself. Also, it would reduce the amount of ow processing tasks currently delegated to specialized middleboxes. The underlying challenge is: can we devise a stateful data plane programming abstraction (versus the stateless OpenFlow match/action table) which still entails high performance and remains consis- tent with the vendors' preference for closed platforms? We posit that a promising answer revolves around the usage of extended finite state machines, as an extension (super-set) of the OpenFlow match/action abstraction. We concretely turn our proposed abstraction into an actual table-based API, and, perhaps surprisingly, we show how it can be sup- ported by (mostly) reusing core primitives already implemented in OpenFlow devices.},
+author = {Bianchi, Giuseppe and Bonola, Marco and Capone, Antonio and Cascone, Carmelo},
+doi = {10.1145/2602204.2602211},
+file = {:Users/Hanyu/Desktop/可编程数据平面/stateful PDP/sigcomm'14{\_}Openstate.pdf:pdf},
+issn = {19435819},
+journal = {Computer Communication Review},
+keywords = {Openflow,Programming interfaces,SDN,State machines},
+number = {2},
+pages = {44--51},
+title = {{Openstate: Programming platform-independent stateful openflow applications inside the switch}},
+volume = {44},
+year = {2014}
+}
+@article{Sun2017,
+abstract = {As the prevailing technique of software-defined networking SDN, open flow introduces significant programmability, granularity, and flexibility for many network applications to effectively manage and process network flows. However, open flow only provides a simple "match-action" paradigm and lacks the functionality of stateful forwarding for the SDN data plane, which limits its ability to support advanced network applications. Heavily relying on SDN controllers for all state maintenance incurs both scalability and performance issues. In this paper, we propose a novel stateful data plane architecture SDPA for the SDN data plane. A co-processing unit, forwarding processor FP, is designed for SDN switches to manage state information through new instructions and state tables. We design and implement an extended open flow protocol to support the communication between the controller and FP. To demonstrate the practicality and feasibility of our approach, we implement both software and hardware prototypes of SDPA switches, and develop a sample network function chain with stateful firewall, domain name system DNS reflection defense, and heavy hitter detection applications in one SDPA-based switch. Experimental results show that the SDPA architecture can effectively improve the forwarding efficiency with manageable processing overhead for those applications that need stateful forwarding in SDN-based networks.},
+author = {Sun, Chen and Bi, Jun and Chen, Haoxian and Hu, Hongxin and Zheng, Zhilong and Zhu, Shuyong and Wu, Chenghui},
+doi = {10.1109/TNET.2017.2726550},
+file = {:Users/Hanyu/Desktop/可编程数据平面/hyper/TON2017{\_}SDPA.pdf:pdf},
+issn = {10636692},
+journal = {IEEE/ACM Transactions on Networking},
+keywords = {SDN,data plane,stateful forwarding},
+number = {6},
+pages = {3294--3308},
+title = {{SDPA: Toward a Stateful Data Plane in Software-Defined Networking}},
+volume = {25},
+year = {2017}
+}
+@article{Pontarelli2019,
+abstract = {While programmable NICs allow for better scalability to handle growing network workloads, providing an expressive yet simple abstraction to program stateful network functions in hardware remains a research challenge. We address the problem with FlowBlaze, an open abstraction for building stateful packet processing functions in hardware. The abstraction is based on Extended Finite State Machines and introduces the explicit definition of flow state, allowing FlowBlaze to leverage flow-level parallelism. FlowBlaze is expressive, supporting a wide range of complex network functions, and easy to use, hiding low-level hardware implementation issues from the programmer. Our implementation of FlowBlaze on a NetFPGA SmartNIC achieves very low latency (in the order of a few microseconds), consumes relatively little power, can hold per-flow state for hundreds of thousands of flows, and yields speeds of 40 Gb/s, allowing for even higher speeds on newer FPGA models. Both hardware and software implementations of FlowBlaze are publicly available.},
+author = {Pontarelli, Salvatore and Bifulco, Roberto and Bonola, Marco and Cascone, Carmelo and Spaziani, Marco and Bruschi, Valerio and Sanvito, Davide and Siracusano, Giuseppe and Capone, Antonio and Honda, Michio and Huici, Felipe and Bianchi, Giuseppe},
+file = {:Users/Hanyu/Desktop/可编程数据平面/FPGA/nsdi19{\_}FlowBlaze.pdf:pdf},
+isbn = {9781931971492},
+journal = {Proceedings of the 16th USENIX Symposium on Networked Systems Design and Implementation, NSDI 2019},
+pages = {531--547},
+title = {{Flowblaze: Stateful packet processing in hardware}},
+year = {2019}
+}
+@article{Li2016,
+abstract = {Highly flexible software network functions (NFs) are crucial components to enable multi-tenancy in the clouds. However, software packet processing on a commodity server has limited capacity and induces high latency. While software NFs could scale out using more servers, doing so adds significant cost. This paper focuses on accelerating NFs with programmable hardware, i.e., FPGA, which is now a mature technology and inexpensive for datacenters. However, FPGA is predominately programmed using low-level hardware description languages (HDLs), which are hard to code and difficult to debug. More importantly, HDLs are almost inaccessible for most software programmers. This paper presents ClickNP, a FPGA-accelerated platform for highly flexible and high-performance NFs with commodity servers. ClickNP is highly flexible as it is completely programmable using high-level C-like languages, and exposes a modular programming abstraction that resembles Click Modular Router. ClickNP is also high performance. Our prototype NFs show that they can process traffic at up to 200 million packets per second with ultra-low latency ({\textless} 2$\mu$s). Compared to existing software counterparts, with FPGA, ClickNP improves throughput by 10x, while reducing latency by 10x. To the best of our knowledge, ClickNP is the first FPGA-accelerated platform for NFs, written completely in high-level language and achieving 40 Gbps line rate at any packet size.},
+author = {Li, Bojie and Tan, Kun and Luo, Layong and Peng, Yanqing and Luo, Renqian and Xu, Ningyi and Xiong, Yongqiang and Cheng, Peng and Chen, Enhong},
+doi = {10.1145/2934872.2934897},
+file = {:Users/Hanyu/Desktop/可编程数据平面/FPGA/clickNP.pdf:pdf},
+isbn = {9781450341936},
+journal = {SIGCOMM 2016 - Proceedings of the 2016 ACM Conference on Special Interest Group on Data Communication},
+keywords = {Compiler,FPGA,Network function virtualization,Reconfigurable hardware},
+pages = {1--14},
+title = {{ClickNP: Highly flexible and high performance network processing with reconfigurable hardware}},
+year = {2016}
+}
+@article{Dargahi2017,
+abstract = {Software-defined networking (SDN) emerged as an attempt to introduce network innovations faster, and to radically simplify and automate the management of large networks. SDN traditionally leverages OpenFlow as device-level abstraction. Since OpenFlow permits the programmer to 'just' abstract a static flow-table, any stateful control and processing intelligence is necessarily delegated to the network controller. Motivated by the latency and signaling overhead that comes along with such a two-tiered SDN programming model, in the last couple of years several works have proposed innovative switch-level (data plane) programming abstractions capable to deploy some smartness directly inside the network switches, e.g., in the form of localized stateful flow processing. Furthermore, the possible inclusion of states and state maintenance primitives inside the switches is currently being debated in the OpenFlow standardization community itself. In this paper, after having provided the reader with a background on such emerging stateful SDN data plane proposals, we focus our attention on the security implications that data plane programmability brings about. Also via the identification of potential attack scenarios, we specifically highlight possible vulnerabilities specific to stateful in-switch processing (including denial of service and saturation attacks), which we believe should be carefully taken into consideration in the ongoing design of current and future proposals for stateful SDN data planes.},
+author = {Dargahi, Tooska and Caponi, Alberto and Ambrosin, Moreno and Bianchi, Giuseppe and Conti, Mauro},
+doi = {10.1109/COMST.2017.2689819},
+file = {:Users/Hanyu/Desktop/可编程数据平面/stateful PDP/survey.pdf:pdf},
+issn = {1553877X},
+journal = {IEEE Communications Surveys and Tutorials},
+keywords = {OpenFlow,OpenState,P4,SDN security,Software-defined networking (SDN),data plane programmability,stateful SDN data planes,vulnerability assessment},
+number = {3},
+pages = {1701--1725},
+title = {{A Survey on the Security of Stateful SDN Data Planes}},
+volume = {19},
+year = {2017}
+}
+@article{Gember-Jacobson2015,
+abstract = {Network functions virtualization (NFV) together with softwaredefined networking (SDN) has the potential to help operators satisfy tight service level agreements, accurately monitor and manipulate network traffic, and minimize operating expenses. However, in scenarios that require packet processing to be redistributed across a collection of network function (NF) instances, simultaneously achieving all three goals requires a framework that provides efficient, coordinated control of both internal NF state and network forwarding state. To this end, we design a control plane called OpenNF. We use carefully designed APIs and a clever combination of events and forwarding updates to address race conditions, bound overhead, and accommodate a variety of NFs. Our evaluation shows that OpenNF offers efficient state control without compromising flexibility, and requires modest additions to NFs.},
+author = {Gember-Jacobson, Aaron and Viswanathan, Raajay and Prakash, Chaithan and Grandl, Robert and Khalid, Junaid and Das, Sourav and Akella, Aditya},
+doi = {10.1145/2619239.2626313},
+file = {:Users/Hanyu/Desktop/NFV/opennf.pdf:pdf},
+isbn = {9781450328364},
+issn = {19435819},
+journal = {Computer Communication Review},
+keywords = {Middleboxes,Network functions,Software-defined networking},
+number = {4},
+pages = {163--174},
+title = {{OpenNF: Enabling innovation in network function control}},
+volume = {44},
+year = {2015}
+}
+@inproceedings{xu2016demystifying,
+  title={Demystifying the energy efficiency of network function virtualization},
+  author={Xu, Zhifeng and Liu, Fangming and Wang, Tao and Xu, Hong},
+  booktitle={2016 IEEE/ACM 24th International Symposium on Quality of Service (IWQoS)},
+  pages={1--10},
+  year={2016},
+  organization={IEEE}
+}
+@article{bosshart2014p4,
+  title={P4: Programming protocol-independent packet processors},
+  author={Bosshart, Pat and Daly, Dan and Gibb, Glen and Izzard, Martin and McKeown, Nick and Rexford, Jennifer and Schlesinger, Cole and Talayco, Dan and Vahdat, Amin and Varghese, George and others},
+  journal={ACM SIGCOMM Computer Communication Review},
+  volume={44},
+  number={3},
+  pages={87--95},
+  year={2014},
+  publisher={ACM New York, NY, USA}
+}
+@inproceedings{katsikas2018metron,
+  title={Metron:$\{$NFV$\}$ Service Chains at the True Speed of the Underlying Hardware},
+  author={Katsikas, Georgios P and Barbette, Tom and Kostic, Dejan and Steinert, Rebecca and Maguire Jr, Gerald Q},
+  booktitle={15th $\{$USENIX$\}$ Symposium on Networked Systems Design and Implementation ($\{$NSDI$\}$ 18)},
+  pages={171--186},
+  year={2018}
+}
+@article{sun2017hyper,
+  title={HYPER: A hybrid high-performance framework for network function virtualization},
+  author={Sun, Chen and Bi, Jun and Zheng, Zhilong and Hu, Hongxin},
+  journal={IEEE Journal on Selected Areas in Communications},
+  volume={35},
+  number={11},
+  pages={2490--2500},
+  year={2017},
+  publisher={IEEE}
+}
+@article{fujisawa2002sdpa,
+  title={SDPA (SemiDefinite Programming Algorithm) User’s Manual—Version 6.2. 0},
+  author={Fujisawa, Katsuki and Kojima, Masakazu and Nakata, Kazuhide and Yamashita, Makoto},
+  journal={Department of Mathematical and Com-puting Sciences, Tokyo Institute of Technology. Research Reports on Mathematical and Computing Sciences Series B: Operations Research},
+  year={2002}
+}
+@article{sun2017hyper,
+  title={Hyper: A hybrid high-performance framework for network function virtualization},
+  author={Sun, Chen and Bi, Jun and Zheng, Zhilong and Hu, Hongxin},
+  journal={IEEE Journal on Selected Areas in Communications},
+  volume={35},
+  number={11},
+  pages={2490--2500},
+  year={2017},
+  publisher={IEEE}
+}
+@inproceedings{bifulco2018survey,
+  title={A survey on the programmable data plane: Abstractions, architectures, and open problems},
+  author={Bifulco, Roberto and R{\'e}tv{\'a}ri, G{\'a}bor},
+  booktitle={2018 IEEE 19th International Conference on High Performance Switching and Routing (HPSR)},
+  pages={1--7},
+  year={2018},
+  organization={IEEE}
+}
+@inproceedings{zheng2018p4visor,
+  title={P4visor: Lightweight virtualization and composition primitives for building and testing modular programs},
+  author={Zheng, Peng and Benson, Theophilus and Hu, Chengchen},
+  booktitle={Proceedings of the 14th International Conference on emerging Networking EXperiments and Technologies},
+  pages={98--111},
+  year={2018}
+}
+@article{zhang2019hypervdp,
+  title={HyperVDP: High-performance virtualization of the programmable data plane},
+  author={Zhang, Cheng and Bi, Jun and Zhou, Yu and Wu, Jianping},
+  journal={IEEE Journal on Selected Areas in Communications},
+  volume={37},
+  number={3},
+  pages={556--569},
+  year={2019},
+  publisher={IEEE}
+}
+@inproceedings{hancock2016hyper4,
+  title={Hyper4: Using p4 to virtualize the programmable data plane},
+  author={Hancock, David and Van der Merwe, Jacobus},
+  booktitle={Proceedings of the 12th International on Conference on emerging Networking EXperiments and Technologies},
+  pages={35--49},
+  year={2016}
+}

@@ -1,5 +1,5 @@
 # draft
-👹
+
 Progress
   - Done with data plane design
   

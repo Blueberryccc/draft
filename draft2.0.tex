@@ -76,7 +76,7 @@ Programmable data plane has processing capabilities that match line rate (e.g., 
 
 Due to the features of PDP, there are two critical challenges of NF offloading: 
 1) Service Chaining. Different flows in network have diverse and dynamic SFC requirements. NFs in PDP should be organized to support multiple service chains and provide flexible reconfigurability for operators to cope with changing needs. To address this issue, a naive method is to implement one service chain in one programmable switch, which clearly lacks scalability and is not able to cope with ever-changing requirements[]. Hyper4 takes another way to fully realize virtualization by configure match filed and instructions at runtime at the cost of massive memory usage[].
-2) Stateful Operations. Operation on states is widely involved in NF behaviors (e.g., a heavy hitter detection would access its counter to decide whether to alert the controller). 
+2) Stateful Operations. Operation on states is widely involved in NF behaviors (e.g., a big flow detector would access its counter to decide whether to alert the controller). 
 
 \textbf{to select from two versions}
 
@@ -85,8 +85,8 @@ In order to reduce the switch-to-controller's signaling overhead of state access
 However, current PDP platforms lack focus on paradigm of high-level stateful applications. For example, OpenFlow provides little support for maintaining states in switch where flows are not able to react differently when state changes. In contrast, FPGA offers great program flexibility, but is not operator-friendly with hardware description language.
 
 
-To conquer the above challenges, we design STH, a flexible and high-performance NF management framework which leverages PDP to offload NFs. STH can allocate Hardware-based NFs(HNF) to dynamic traffic to minimize the impact on data plane. 
-We adopted P4 (Programming Protocol-independent Packet Processors) switch as the data plane to offload NFs and designed a P4-based NF implementation abstraction composed of pipeline tables considering both stateless and stateful NFs, where state access and transition operations are entirely inside the switch. To effectively react to dynamic traffic with diverse SFC requirements, we designed the two-stages NF mapping algorithm including static path generation algorithm and dynamic path selection algorithm in the control plane. Our implementation on Wedge switch shows that PDP is feasible to offload NF and achieves high performance with line rate.
+To conquer the above challenges, we design STH, a flexible and high-performance NF management framework which leverages PDP to offload NFs. STH can allocate Hardware-based NFs (HNF) to dynamic traffic to minimize the impact on data plane. 
+We adopted P4 (Programming Protocol-independent Packet Processors) switch as the data plane to offload NFs and designed a P4-based NF implementation abstraction composed of pipeline tables considering both stateless and stateful NFs, where state access and transition operations are entirely inside the switch. To effectively react to dynamic traffic with diverse SFC requirements, we designed the two-stages NF mapping algorithm including static path generation algorithm and dynamic path selection algorithm in the control plane. Our implementation on (name of hardware switch) switch shows that PDP is feasible to offload NF and achieves high performance with line rate.
 
 
 %(1) Proposed NFV management platform based on P4 platform, including NF abstraction, NF initialization, service chaining and NF runtime management. System supports the realization of both stateful and stateless NF.
@@ -100,14 +100,14 @@ We adopted P4 (Programming Protocol-independent Packet Processors) switch as the
 
 
 \begin{figure}[t]
-\centerline{\includegraphics[scale=0.4]{src/arch.png}}
+\centerline{\includegraphics[width=0.85\linewidth]{src/arch.pdf}}
 \caption{System architecture overview}
 \label{architecture}
 \end{figure}
  
 \section{Background}
 
-\subsection{Programmable data plane}
+\subsection{P4 Langauage}
 P4\cite{bosshart2014p4} is a domain specific language, which describes the packet processing pipeline of data plane device.  P4 was proposed as a target-independent abstract model for packet processing, in which the programmer does not need to know the specifications of the underlying forwarding device in terms of the device type or technologies(e.g., ASIC, FPGA, CPU). Therefore, the programs written in P4 language, can be mapped to several kinds of devices. 
 
 A P4 program is composed of headers, parsers, metadata, match-action tables, and control flows. A match-action table matches the specified packet header fields and selects an action to execute. We use match-action tables to compose NF implementations or as a flow classifier. Metadata in P4 program is used to exchange processing information between tables, and a control flow specifies the order and logic of table processing. P4 community provides sound ecosystem, with its own compiler, P4C, to load the program to target devices and its southbound API, P4Runtime,  to expose the device capabilities for operators to populate rules at runtime. Leveraging these comprehensive building blocks provided by P4, we are able to rapidly build and deploy custom high-level applications.
@@ -148,7 +148,7 @@ To cope with different service chain requirements, a critical problem rooted ins
 A natural strawman solution for service chaining is to implement one or more service chains in a single programmable switch. P4Visor proposed to improve this solution by merging multiple PDP programs in a single switch through a combination of compiler optimizations and program analysis-based algorithms. 
 Although more flexible than the navie solution, the scheme still lacks reusability and scalability. For each slightly changed request, a service chain entity will be installed and occupy all or half of the switch.
 
-Some researchers \cite{hancock2016hyper4} \cite{zhang2019hypervdp} offers another way to orchestrate NFs by leveraging match-action tables to simulate control logic, thus virtualizing PDP and realizing real-time reconfiguration. However, these solutions have brought in the problem of resource waste. For a simple service chain example $firewall->switch->router$, Hyper4\cite{hancock2016hyper4} and HyperVDP\cite{zhang2019hypervdp} use 7x and 3.2x table resources respectively, without mentioning other resources such as metadata.
+Some researchers \cite{hancock2016hyper4} \cite{zhang2019hypervdp} offers another way to orchestrate NFs by leveraging match-action tables to simulate control logic, thus virtualizing PDP and realizing real-time reconfiguration. However, these solutions have brought in the problem of resource waste. For a simple service chain example firewall$\rightarrow$switch$\rightarrow$router, Hyper4\cite{hancock2016hyper4} and HyperVDP\cite{zhang2019hypervdp} use 7x and 3.2x table resources respectively, without mentioning other resources such as metadata.
 
 ClickP4 offers the potential of dynamically combining features on programmable switches via tagging flows in front of performing NF logic. But it is limited to program decomposition and feature orchestration without focus on NF implementation model and schedule scheme for multiple switches.
 
@@ -156,14 +156,14 @@ ClickP4 offers the potential of dynamically combining features on programmable s
 \begin{figure}[t]
 \centering  
 \subfloat[initial flow table]{  
-\includegraphics[width=1\linewidth]{src/suba.png}}  
+\includegraphics[width=0.45\textwidth]{src/suba.pdf}}  
 \label{1a}\hfill  
 \subfloat[system workflow]{  
-\includegraphics[width=1\linewidth]{src/subb.png}}  
+\includegraphics[width=0.45\textwidth]{src/subb.pdf}}  
 \label{1b}\\
 \caption{Figure a depicts the flow table of switch 1 and switch 2 when receiving the first packet of incoming flow flow1. The controller receives packet and thus deploy corresponding flow rules in s1 and s2 as in figure b. The green rules means that this rule is matched.}  
 \label{arch}  
-\end{figure} 
+\end{figure}
 
 \section{System Overview}
 System architecture consists of HNF instances in data plane and control plane designs for NF management and flow allocation. System workflow is introduced through packet processing procedure.
@@ -177,8 +177,6 @@ As introduced before, maintaining state consistency is a significant task for da
 
 Although the primitives provided by the programmable data plane can support a large part of the operations of NF, there are still several NFs that are not suitable for hardware implementation. After research, we found NFs with too complex operations which are not supported by hardware capabilities, such as DPI, Carrier Grade NA(P)T, are not fully supported by the programmable data plane for the operation of packets. 
 In addition, considering that hardware resources are more scarce than software resources, when hardware resources cannot guarantee NF deployment requirements and basic forwarding requirements, it is still necessary to use VNF deployment on general COTS equipment.
-
-%\includepdf[pages={1}]{system.pdf}
 
 
 \subsection{Control Plane}\label{BB}
@@ -196,7 +194,7 @@ Translation module simplifies operator workflow by providing primitives for deci
 
 \subsection{A Packet's Life}
 We then describe the packet processing procedure of STH.As shown in \ref{arch}, the control flow ofSFC table, forward table and corresponding NF table will be proactively installed in data plane as the processing logic of HNF framework.
-Assume a request flow $f1$ with SFC requirements $NAT->Big Flow Detector$ arrives at switch $s1$, the system will process it through 4 steps.
+Assume a request flow $f1$ with SFC requirements NAT$\rightarrow$Big Flow Detector arrives at switch $s1$, the system will process it through 4 steps.
 (1) After the first packet of flow $f1$ enters the edge switch, according to Fig. \ref{1a}, it will first be sent to the controller via match miss of the SFC label table since label allocation entries of this flow havnt't been installed yet.
 (2) After receiving packet-in, the controller will run a dynamic selection algorithm to choose an optimal path with requested NFs for the flow. The specific detail of the algorithm is described in Section-5. 
 (3) The controller will install rules of SFC table, forwarding table and NF table for $f1$ on switches along with the selected path.
@@ -204,23 +202,23 @@ Assume a request flow $f1$ with SFC requirements $NAT->Big Flow Detector$ arrive
 
 
 \begin{figure}[t]
-\centerline{\includegraphics[scale=0.4]{src/lb.png}}
-\caption{Layer-4 Load Balancer implementation}
-\label{stateless}
+\centerline{\includegraphics[scale=0.3]{src/flow.pdf}}
+\caption{Flow Table Implementation of Load Balancer and Big Flow Detector}
+\label{flow}
 \end{figure}
 
-\begin{figure}[t]
-\centerline{\includegraphics[scale=0.4]{src/fsm.png}}
-\caption{State machine of Big Flow Detector}
-\label{fsm}
-\end{figure}
 
-\begin{figure}[t]
-\centerline{\includegraphics[scale=0.4]{src/bfd2.png}}
-\caption{Big Flow Detector Implementation}
-\label{bfd}
-\end{figure}
-
+%\begin{figure}[t]  
+%\centering  
+%\subfloat[]{  
+%\includegraphics[width=0.45\linewidth]{src/flow.pdf}
+%\label{flow}
+%\subfloat[]{  
+%\includegraphics[width=0.45\linewidth]{src/fsm.pdf} 
+%\label{fsm}\\
+%\caption{Flow Table Implementation of Load Balancer and Big Flow and Finite State Machine Example}  
+%\label{3}  
+%\end{figure} 
 
 \section{Data Plane Design}
 Data plane supports the dynamic HNF framework, which could be divided into three parts: NF implementation paradigm, state management and dynamic chaining.
@@ -286,19 +284,18 @@ In this example, there are three different possible action. When flow state is s
 \end{table}
 
 \begin{figure}[t]
-\centerline{\includegraphics[scale=0.4]{src/sfc.png}}
+\centerline{\includegraphics[scale=0.3]{src/sfc.png}}
 \caption{SFC table implementation}
 \label{sfc}
 \end{figure}
 
 
-
 \subsection{Service Chaining Design}
 To identify diverse SFC path, we utilize SFC labels coding in one-hot form for each flow. A SFC label table is implemented ahead of all the HNF tables in every switch, entries of which are deployed by the controller. To enable reverse order of HNFs on a switch, resubmit operation provided by P4 platform that sends the packet back to the start of pipeline.
 
-The length of SFC label is equal to $|SFC|+1$ ($|SFC|$ means length of HNF sequence in a switch). The $kth$ bit of SFC label in binary form indicates whether packets should pass the $kth$ NF ($k <|SFC|$). For example, on a switch with SFC $Big Flow Detector->Firewall->Load Balancer$ installed, $0b0101$ indicates that corresponding flow needs to pass through Big Flow Detector and Load Balancer in sequence. 
+The length of SFC label is equal to $|SFC|+1$ ($|SFC|$ means length of HNF sequence in a switch). The $kth$ bit of SFC label in binary form indicates whether packets should pass the $kth$ NF ($k <|SFC|$). For example, on a switch with SFC Big Flow Detector $\rightarrow$ Firewall $\rightarrow$ Load Balancer installed, $0b0101$ indicates that corresponding flow needs to pass through Big Flow Detector and Load Balancer in sequence. 
 
-In order to achieve identify resubmission requirements, the highest bit of SFC label indicates whether resubmission is required. We add a resubmission table at the terminal of switch pipeline, with matching field set as flow key, and action parameter set as new flow label. 
+In order to identify resubmission requirements, the highest bit of SFC label indicates whether resubmission is required. We add a resubmission table at the terminal of switch pipeline, with matching field set as flow key, and action parameter set as new flow label. 
 The system now supports flow to go through pipeline for two times. But for situations that require multiple resubmissions, we can simply add an additional matching field of resubmit table to identify the times of resubmissions. However, since resubmission will impact system performance, it's not recommended to overuse resubmit operations. 
 
 
@@ -319,84 +316,178 @@ Hash function shows a bad performance under two circumstances. Only when a large
 
 
 \section{Control Plane Design}
-The decision layer uses a two-stage algorithm that combines static and dynamic algorithm to map NF instance. In a system with both software and hardware NF installed, the mapping algorithm should solve the problem of choosing the optimal instance for each request to reduce the extra use of flow table space as much as possible, thereby making the system more scalable.
+The decision module uses a two-stage algorithm consisting of static and dynamic algorithm to construct SFC routing path for flows. 
+
+%In a system with both software and hardware NF installed, the mapping algorithm should solve the problem of choosing the optimal instance for each request to reduce the extra use of flow table space as much as possible, thereby making the system more scalable.
+
+
 \subsection{Problem Definition}
-When a new request arrives, it is necessary to map the requested VNFs to the underlying network infrastructure while ensuring service requirements and network overhead, that is, to map the virtual network function forwarding map to the physical topology. In the P4 switch environment, the challenge of NF mapping mainly lies in how to use the limited switch flow table space resources to improve the performance of the entire system.
+%When a new request arrives, it is necessary to map the requested VNFs to the underlying network infrastructure while ensuring service requirements and network overhead, that is, to map the virtual network function forwarding map to the physical topology. 
+When a new request arrives, a forwarding path should be constructed meeting following rules: (1) NF sequences in order as requested is provided on the path. (2) nodes along the path have available remaining resources (flow table resources of switches and processing resources of servers) (3) links along the path have available remaining bandwidth. Meanwhile, in order to ensure network performance and avoid potential congestion, the shortest possible path should be selected on the basis of restrictions.
 
-The data plane topology is modeled as an undirected graph $G=(V, N, E)$, where V, N and E denote the node set, NF set and link set respectively. Meanwhile, we model the incoming request to be deployed as $R=(N_r, src, dst, b_r)$. $N_r$ denotes the required service chain of request. And the request has other attributes including source and destination switch, and initial data rate $b_r$. 
+%In the P4 switch environment, the challenge of NF mapping mainly lies in how to use the limited switch flow table space resources to improve the performance of the entire system.
+
+The data plane topology is modeled as an undirected graph $G=(V, N, E)$, where V, N and E denote the node set, NF set and link set respectively. Meanwhile, we model the incoming request to be deployed as $R=(N_r, v_{s}, v_{d}, b_r)$. $N_r$ denotes the required service chain of request $r$. Other attributes of request $r$ include source and destination node $v_{s}$, $v_{d}$, as well as initial data rate $b_r$. 
 
 \begin{equation}
-\min \sum_{(v, v^{\prime}) \in E} y_{N_{r}^{i}}^{v} \cdot y_{N_{r}^{i+1}}^{v^{\prime}} \cdot b_r \label{1}
+\min \quad w_{l} \cdot \frac{m_{l}}{l}+w_{r} \cdot \frac{m_{r}}{|r|}
 \end{equation}
 
-In order to minimize the impact of the deployment request on the switch flow table space, we set the main goal of the algorithm to complete the NF mapping on the shortest possible path. As in equation\eqref{1}, we minimize the link load derived from current request, where $y_{N_{r}^{i}}^{v}$ means if the $ith$ NF of request $r$ is deployed on node $v$.
-
-
-\begin{equation}
-\sum_{v \in V} y_{n}^{v}=1, \quad \forall n \in N^{\prime}\label{2}
-\end{equation}
-\begin{equation}
-y_{n}^{v} \in\{0,1\} \quad \forall v \in V, n \in N^{\prime} \label{3}
-\end{equation}
+In order to improve performance of request while reducing the possibility of network congestion, we set the target of constructing forwarding path as Eq. (1), parameters of which are defined as: 
 
 \begin{equation}
-l(u, v)=\lambda_{v} b \quad \forall u, v \in V,(u, v) \in E\label{4}
+m_{l}=\sum_{i}\sum_{v, v^{\prime} \in V, v \neq v^{\prime}} t_{v, v^{\prime}} \cdot y_{N_{i}}^{v} \cdot  y_{N_{i+1}}^{v^{\prime}} \cdot \frac{b_{r}}{b_{v, v^{\prime}}}
 \end{equation}
 
 \begin{equation}
-\sum_{i=1}^{N^{\prime}} \sum_{j=i+1}^{N^{\prime}} y_{N_{i}^{^{\prime}}}^{v} y_{N_{j}^{^{\prime}}}^{v} s_{v}^{N_{j}^{\prime}, N_{j}^{\prime}}, \forall v \in V\label{5}
+l = \sum_{i}\sum_{v, v^{\prime} \in V, v \neq v^{\prime}} t_{v, v^{\prime}} \cdot y_{N_{i}}^{v} \cdot  y_{N_{i+1}}^{v^{\prime}}
 \end{equation}
 
 \begin{equation}
-y_{n}^{v}(c_{n}^r + c_{n}^f) \leqslant c_{v} \label{6}
-\end{equation}
-
-\begin{equation}
-\sum_{n \in N} y_{n}^{v}(c_{n}^r + c_{n}^f) \leqslant c_{v}, \forall v \in V \label{7}
-\end{equation}
-
-\begin{equation}
-l(u, v) + b(u, v) \leqslant c(u, v), \forall (u, v) \in E \label{8}
+m_{r} = \sum_{i=1}^{|r|-1} \sum_{v \in V_{s}} y_{N_{i}}^{v} \cdot y_{N_{i+1}}^{v} \cdot d_{N_{i}, N_{i+1}}^{v} 
 \end{equation}
 
 
-
-\begin{table}[htbp]
+\setlength{\tabcolsep}{1mm}{
+\begin{table}[t]
 \caption{Network Model Notation}
 \begin{center}
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{p{60pt}p{180pt}}
 \hline
 \textbf{Notations}&\textbf{Description}\\
 \hline
-$V_{s}$ & set of switch nodes\\
+$N$ & The set of NFs within the network\\
 \hline
-$V_{h}$ & set of host nodes\\
+$V$ & The set of nodes including switches $V_s$ and hosts $V_h$\\
 \hline
-$c_{h}$ & residual processing capacity of host $h$\\
+$E$ & The set of links within the network\\
 \hline
-$c_{s}$ & residual memory resources of switch $s$\\
+$N_r$ & Required SFC of request $r$\\
 \hline
-$l(v, v^{\prime})$ & residual bandwidth resources of link  $(v, v^{\prime})$\\
+$b_r$ & Estimated data rate of request $R$\\
 \hline
-$N_v$ & sequence of NF implemented in node $v$\\
+$c_{v}$ & Residual processing capacity of node $v$\\
 \hline
-$N_r$ & required NF sequence of request $R$\\
+$b(v, v^{\prime})$ & Residual bandwidth resources of link  $(v, v^{\prime})$\\
 \hline
-$b_r$ & estimated data rate of request $R$\\
+$x_{N_{i}}^{v}$ & =1 if NF $N_{i}$ is implemented on node $v$\\
+\hline
+$d_{N_{i}}^{v}$ & =1 if NF $N_{i+1}$ is implemented before  $N_{i}$ on node $v$\\
+\hline
+$y_{N_{i}}^{v}$ & Binary variable to designate NF $N_{i}$ is assigned to node $v$\\
+\hline
+$t_{v, v^{\prime}}$ & Binary variable to designate result path $p$ contains link $(v, v^{\prime})$\\
 \hline
 \end{tabular}
 \label{notation}
 \end{center}
 \end{table}
+}
+
+The optimization goal is divided into two parts: 
+1) In order to guarantee the quality of service for request, the link bandwidth utilization should be minimized, denoted as $m_l$ in Eq.(2), where $t_{v,v^{\prime}}$ indicates whether $(v, v^{\prime})$ is included in the optimal path $p$, $y_{N_{i}}^{v}$ indicates whether NF $N_{i}$ is allocated to node $v$, and the bandwidth utilization ratio is obtained by dividing the data rate $b_{r}$ by the remaining bandwidth $b(v, v^{\prime})$ of link $(v, v^{\prime})$.
+2) Since resubmission operation(i.e., packets return to the beginning of current pipeline) is allowed in the system , which brings flexibility while affecting the throughput of both request and corresponding switch.  Therefore, we added a second part to the optimization goal to weigh the impact of path stretching and resubmission. 
+$m_{r}$, times of submissions on the entire service chain of request $r$, is calculated by Eq.(4), where $d_{N_{i}, N_{i+1}}^{v}$ indicates whether $N_{i+1}$ is implemented before $N_{i}$ on switch $v$.
+
+In the optimization goal, metrics are respectively normalized ($m_l$ divided by the total length of path in terms of links $l$ in Eq.(3), $m_r$ divided by the length of service chain) to evaluate them from the same dimension. Since $m_l$ and $m_r$ have different effects on performance under different network circumstances, we use two weights $w_l$ and $w_r$ to change the importance of these metrics in path construction.
+ 
+
+
+\begin{equation}
+t_{v, v^{\prime}} \cdot b_{r}<b_{v, v^{\prime}}, \quad \forall v, v^{\prime} \in V, (v, v^{\prime}) \in E
+\end{equation}
+
+\begin{equation}
+\sum_{i} y_{N_{i}}^{v} \cdot m_{i}<c_{v} \quad \forall v \in V_{s}
+\end{equation}
+
+\begin{equation}
+\sum_{i} y_{N_{i}}^{v} \cdot p_{i}<c_{v} \quad \forall v \in V_{h}
+\end{equation}
+
+Eq. (5) describes the traffic load constraints on each link $v, v^{\prime}$. Eq. (6) and Eq. (7) state resource capacity on each switch $v_s$ and each server $v_h$, where $m_i$ and $p_i$ denote memory and processing resource consumption of NF $i$ respectively.
+
+\begin{equation}
+\sum_{v^{\prime}, \tilde{v} \in V_{s}, v \neq \tilde{v}}\left(t_{v, v^{\prime}} \cdot t_{v, \tilde{v}}+t_{v^{\prime}, v} \cdot t_{\tilde{v}, v}\right)=0 \quad \forall v \in V
+\end{equation}
+
+Eq. (8) defines an important problem of loops in path, i.e., traffic passing through the same switch twice, resulting in traffic routing conflicts. For example, as in Fig. \ref{construct}a, for a flow with path: s1 $\rightarrow$ s2 $\rightarrow$ s1 $\rightarrow$ s3, routing entries of traffic on s2 would conflict, leading to wrong destination.
+
+It should be noted that the loop on switches directly connected with software-NF service installed server is not within the limit. Because it is easy to install a control logic on directly connected switch that identifies and tags the traffic from the server to distinguish and forwards traffic depending on the tag.
+
+\begin{equation}
+\sum_{v \in V} y_{N_{i}}^{v}=1 \quad \forall i \in \left[1, |r|\right]\end{equation}
+
+\begin{equation}
+\sum_{v \in V} \operatorname{t}_{v_{s}, v}=1 \quad \sum_{v \in V} t_{v, v_{d}}=1
+\end{equation}
+
+\begin{equation}
+y_{N_{i}}^{v}=0, \quad \text{if} \quad x_{N_{i}}^{v}=0
+\end{equation}
+
+\begin{equation}
+\sum_{v^{\prime} \in V_s} (t_{v, v^{\prime}} + t_{v^{\prime}, v}=2), \quad \text{if} \quad y_{N_{i}}^{v}=1 \quad \forall v \in V
+\end{equation}
+Eq. (9) requires that each NF is only installed once, while Eq. (10) defines the start and destination of path. Eq. (11) and Eq. (12) ensure the correctness of variable $y_{N_{i}}^{v}$ and $t_{v, v^{\prime}}$.
+
+In order to quickly respond to dynamic traffic, we need a heuristic algorithm for path construction. However, as a naive method, it is necessary to construct a multi-stage forwarding graph, and then use the shortest path algorithm to select the optimal path. 
+Its time complexity is $O(N^2)$, growing with the total number of NF nodes in every stage, which is not conducive to rapid response to traffic. Therefore, we propose a two-stage algorithm to solve this problem.
+
 
 \subsection{Static Path Construction Algorithm}
-For all the request defined in requirements file (introduced in section 3), we use the static path construction algorithm to select the top-k-shortest path as candidates of dynamic algorithm.
+In order to reduce the workload of the dynamic algorithm, the candidate path set will be calculated from static algorithm stage as the input of dynamic algorithm. 
+The static algorithm is only called when the topology is constructed or changed. Since realtime link load statistics cannot be obtained in static algorithm, we set the optimization goal in this stage as the weighted sum of path distance and resubmission times. The dynamic algorithm will evaluate paths according to link load ratio in realtime.
+
+For all the requests defined in requirements file (introduced in section 3), we use the static path construction algorithm to select the top-k-shortest path as Algo. \ref{construction}.
 
 At first, an NF forwarding graph based on the topology graph and SFC request is constructed.
-The forwarding graph contains n + 2 stages (n is the length of the SFC). The first stage and the last stage are the source and destination of the flow. The remaining nodes in each stage are the switch or host with the NF installed. The edge of the forwarding graph is assigned with the distance of the shortest path between two nodes, which can be obtained through the ONOS API. The procedure is represented in \ref{construct}, one of the request is depicted in the figure with the SFC request: B->A->D.
+The forwarding graph contains n + 2 stages (n is the length of SFC requirement). The first stage and the last stage are the source and destination nodes of the flow. The remaining nodes in each stage are the switches or hosts with corresponding NFs installed. The edge of the forwarding graph is assigned with the weighted sum of the distance of the shortest path between two nodes and resubmission times, which can be obtained by collecting network topology and request information. The procedure is presented in Fig. \ref{example}a, one of the request is depicted in the figure with the SFC request: B$\rightarrow$A$\rightarrow$D.
 
-Next, we use the KSP algorithm(Yen's algorithm) to obtain the set of the first k shortest paths, which are used as alternatives to the dynamic algorithm in case the optimal path does not meet the dynamic metrics.
+Next, we use the top-k-shortest path algorithm (i.e., Yen's algorithm) to obtain the set of the first k shortest paths. 
+Since the path set obtained may contain routing loops, more paths than required are calculated from the KSP algorithm (i.e., set the parameter to $2k$), and then filter the paths in order. Paths that do not contain loops can be added candidate set, the algorithm stops when the size of candidate set reaches $k$.
 
+
+\begin{algorithm}[t]
+\KwIn{Network Topology Graph $G=(N, V, E)$, Request $R$}
+\KwOut{NF-Forwarding Graph $g$ and Path Set $P$}
+Step 1: Construct Forward Graph
+$g.add(v_s)$
+
+\For{$i \leftarrow 1$ \KwTo $|N_r|+2$}{
+	\If{$v \in  N_{i}.nodes$}{
+		$g.add(v)$\;
+		\For{$j \in  N_{i-1}.nodes$}{
+			$g[j][v] = w_{l} \cdot d[j][v] + m_{r} \cdot w_{r}$
+%			w_{l} \cdot \frac{m_{l}}{l}+w_{r} \cdot \frac{m_{r}}{|r|}
+		}
+	}
+}
+Step 2: Get Candidate Path Set
+
+$P^{\prime} = KSP(graph, k*2)$
+
+\For{path $p \in P$}{
+	\If{!p.containsLoop()}{
+		$P.add(p)$\;
+		if(P.size==k) \quad break;
+	}
+}
+\caption{{\bf Static Path Construction Algorithm} \label{construction}}
+\end{algorithm}
+
+
+%\begin{figure}  
+%\centering  
+%\subfloat[]{  
+%\includegraphics[width=0.45\linewidth]{src/subc.png}}  
+%\label{one of the requests in network topology}
+%\subfloat[]{  
+%\includegraphics[width=0.45\linewidth]{src/subd.png}}  
+%\label{2b}\\
+%\caption{Figure 7a is the network topology with hardware and software NF instances installed and figure 7b is the constructed forward graph for one of the request.}  
+%\label{construct}  
+%\end{figure} 
 
 \begin{figure}  
 \centering  
@@ -406,55 +497,36 @@ Next, we use the KSP algorithm(Yen's algorithm) to obtain the set of the first k
 \subfloat[constructed graph by algorithm]{  
 \includegraphics[width=0.7\linewidth]{src/subd.png}}  
 \label{2b}\\
-\caption{Figure 6a is the network topology with hardware and software NF instances installed and figure 6b is the constructed forward graph for one of the request.}  
-\label{construct}  
+\caption{Figure 5a is the network topology with hardware and software NF instances installed and figure 5b is the constructed forward graph for one of the request.}  
+\label{example}  
 \end{figure} 
 
-\begin{algorithm}[h]
-\KwIn{Network Topology Graph G, Request Rtttttttttttttttttttttttttttttt}
-\KwOut{NF-Forwarding Graph G' and Path Set P}
-
-
-Step 1: Forward Graph Construction
-
-\For{$i \leftarrow 0$ \KwTo $|N_r|+2$}{
-	\If{$node \in  N_{r}^{i}.nodes$}{
-		$nodes[i].add(node)$\;
-		\For{$j \in  N_{r}^{i-1}.nodes$}{
-			$graph[j][node] = d[j][node]$
-		}
-	}
-}
-
-Step 2: Get Candidate Path Set
-
-$P = KSP(graph)$
-\caption{{\bf Static Path Construction Algorithm} \label{construction}}
-\end{algorithm}
 
 
 \subsection{Dynamic Path Selection Algorithm}
+When the first packet of each request is forwarded to the controller, dynamic path selection algorithm will be activated to select the optimal path from candidate sets considering cumulative link load.
 
-First, forward the first packet of each request to the controller, to match the required SFC sequence from the request file. As shown in Algorithm 2, the candidate path set of the request is read, and the dynamic metrics of each path is calculated. In order to minimize the extra use of flow table space, we define the metrics as the weighted sum of the cumulative sum of the bandwidth utilization of each link on the path and the impact of resubmission. We quantify the impact of resubmission as the times of resubmissions in the entire path. Finally, select the one with the smallest metrics from all paths.
+ As shown in Algorithm 2, the program will first read candidate path set from static algorithm. In order to avoid network congestion and further improve network performance, we set the metrics as cumulative sum of link load ratio (i.e., data rate divided by available bandwidth). 
+ Thus, for each candidate path, restrictions of node capacity and link capacity along the path is first check to guarantee feasibility. Then, an optimal path in terms of link load usage is selected after traversing candidate set.
+ The time complexity of dynamic path selection algorithm is $O(n)$ in terms of number of candidate path, which is a tolerable delay for packets.
+% In order to minimize the extra use of flow table space, we define the metrics as the weighted sum of the cumulative sum of the bandwidth utilization of eacxh link on the path and the impact of resubmission. We quantify the impact of resubmission as the times of resubmissions in the entire path. Finally, select the one with the smallest metrics from all paths.
 
 
 \begin{algorithm}[h]
 \KwIn{Candidate Path Set P of Request R}
-\KwOut{Optimal Path $p^\prime$ of Request R}
+\KwOut{Optimal Path $p^\star$ of Request R}
 
 \nl minimum metrics $min = MAXIMUM$\;
-\nl initiates metrics $m_d, m_r = 0$ \;
 
 \For{path $p \in P$}{
 	\For{edge $e \in p$}{
-			\If{$l[e] >= b_{r}$}{
-				$w_a = MAX$\;
+			\If{$l[e] <= b_{r}$ or $c_{e.src} <= m_r$}{
 				break;
 			}
-	}
-	\If{$w_{d}*m_d + w_{r}*m_r < min$}{
-		$min = w_{d}*m_d + w_{r}*m_r$\;
-		$p^\prime = p$
+			\If{$m_l < min$}{
+				$min = m_l$\;
+				$p^\star = p$
+			}
 	}
 }
 \caption{{\bf Dynamic Path Selection Algorithm} \label{Dynamic}}
@@ -462,39 +534,50 @@ First, forward the first packet of each request to the controller, to match the 
 
 
 
-\subsection{NF Runtime Manager}
-
-
 \section{Evaluation}
-\subsection{Implementation}
-Data Plane:
+We have evaluated the system on both a software (Bmv2) and a hardware (Barefoot Tofino) programmable data plane about performance and overheads of hardware offloading, as well as performance of two-stage NF mapping algorithm. 
 
-Hardware implementation: switch with barefoot tofino ASIC, type of NF to be deployed.
-Benchmark: same NF deployed on OpennetVM.
+\subsection{Performance Benefits and Overheads of PDP}
+\textbf{Experiment Setup}. On the (Barefoot Tofino) target, we implemented the following NFs: NAT, Firewall, Load Balancer, Stateful Firewall, Port Knocking Firewall and Big Flow Detector. Due the limitation of hardware devices on stateful actions, we made a little modifications on stateful HNF models by combining reading, comparing and writing HNF state into a single register action, thus avoiding conflicts. 
+To evaluate the performance of hardware HNF from common NFV solutions, we build two chains: stateful chain of Port Knocking Firewall 	$\rightarrow$ Stateful Firewall 	$\rightarrow$  Big Flow Detector and stateless chain NAT 	$\rightarrow$ Firewall 	$\rightarrow$ Load Balancer, and use Ixia Tester to generate packets and analyze collected information. Throughput and hardware overhead(caused by HNF) are considered to evaluate hardware offloading scheme. We also evaluated the impact of multiple flows (1 - 1000) and the extra costs caused by dynamic chaining framework. As for software platforms, we utilized OpenNetVM to collect needed information.
 
-Software implementation: using bmv2 with mininet to perform large-scale simulation tests.
+\textbf{Performance}.
 
-Control Plane:
+\textbf{Dealing with massive flow}.
 
-Implement the control plane(NF manage platform) based on ONOS controller with xxx LOC in JAVA. The control plane consists of modules: basic forward module, static algorithm module, dynamic algorithm module, NF rule translation module. We use Yen'algorithm[] to select k-shortest-path, and use the api provided by ONOS to collect metrics. In addition, we expands the ONOS framework to support the deployment of different P4 programs on different switches.
+\textbf{Hardware Overheads}.
 
 
-\subsection{Dynamic Algorithm Test}
+\begin{figure}  
+\centering  
+\subfloat[]{  
+\includegraphics[width=0.45\linewidth]{src/single1.pdf}}  
+\label{2a}
+\subfloat[]{  
+\includegraphics[width=0.45\linewidth]{src/single2.pdf}}  
+\label{2b}\\
+\caption{Latency and throughput result of hardware performance test}  
+\label{hard}  
+\end{figure} 
 
+\subsection{Analytical Evaluation of Control Plane Algorithm}
+\textbf{Experiment Setup}. We built the network topology with BMv2 switches on mininet with ONOS controller. We implemented the same HNFs as hardware experiment. The topology used is abilene in SDNlib with 12 nodes and 22 links, we also used the trace data set provided by SDNlib in the same topology, where traffic throughput of every node pairs are listed. We wrote the script to generate and receiver packets on different nodes, every flow in network is selected randomly from data set and is allocated with randomly selected service chain requirements. Flow completion time, throughput, link load and memory usage are informations collected to be evaluated. Implement the control plane(NF manage platform) based on ONOS controller with about 1000 LOC in JAVA. The control plane consists of modules: basic forward module, static algorithm module, dynamic algorithm module, NF rule translation module. We use Yen'algorithm[] to select k-shortest-path, and use the API provided by ONOS to collect metrics. In addition, we expands the ONOS framework to support the deployment of different P4 programs on different switches.
+
+\textbf{Bechmark}.
+
+\textbf{FCT and Throughput Performance}.
+
+\textbf{Bandwidth Resources}.
+
+\textbf{Flow Entry Resources}.
 
 
 \section{Conclusion}
-Give a brief introduction about the system
 ~\\
-
 
 
 \section*{Acknowledgment}
 
-The preferred spelling of the word ``acknowledgment'' in America is without 
-an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
-G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
-acknowledgments in the unnumbered footnote on the first page.
 
 \bibliographystyle{unsrt}  
 \bibliography{StatefulPDP}

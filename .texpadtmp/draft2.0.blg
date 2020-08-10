@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: /Users/Hanyu/Desktop/draft/.texpadtmp/draft2.0.aux
+The style file: unsrt.bst
+Database file #1: ../StatefulPDP.bib
+Repeated entry---line 121 of file ../StatefulPDP.bib
+ : @article{sun2017hyper
+ :                      ,
+I'm skipping whatever remains of this entry
+You've used 14 entries,
+            1791 wiz_defined-function locations,
+            535 strings with 7348 characters,
+and the built_in function-call counts, 4361 in all, are:
+= -- 371
+> -- 262
+< -- 6
++ -- 92
+- -- 78
+* -- 342
+:= -- 692
+add.period$ -- 44
+call.type$ -- 14
+change.case$ -- 14
+chr.to.int$ -- 0
+cite$ -- 14
+duplicate$ -- 175
+empty$ -- 374
+format.name$ -- 78
+if$ -- 959
+int.to.chr$ -- 0
+int.to.str$ -- 14
+missing$ -- 14
+newline$ -- 73
+num.names$ -- 14
+pop$ -- 40
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 91
+stack$ -- 0
+substring$ -- 318
+swap$ -- 56
+text.length$ -- 6
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 46
+width$ -- 16
+write$ -- 157
+(There was 1 error message)

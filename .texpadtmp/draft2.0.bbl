@@ -1,0 +1,99 @@
+\begin{thebibliography}{10}
+
+\bibitem{Pontarelli2019}
+Salvatore Pontarelli, Roberto Bifulco, Marco Bonola, Carmelo Cascone, Marco
+  Spaziani, Valerio Bruschi, Davide Sanvito, Giuseppe Siracusano, Antonio
+  Capone, Michio Honda, Felipe Huici, and Giuseppe Bianchi.
+\newblock {Flowblaze: Stateful packet processing in hardware}.
+\newblock {\em Proceedings of the 16th USENIX Symposium on Networked Systems
+  Design and Implementation, NSDI 2019}, pages 531--547, 2019.
+
+\bibitem{bifulco2018survey}
+Roberto Bifulco and G{\'a}bor R{\'e}tv{\'a}ri.
+\newblock A survey on the programmable data plane: Abstractions, architectures,
+  and open problems.
+\newblock In {\em 2018 IEEE 19th International Conference on High Performance
+  Switching and Routing (HPSR)}, pages 1--7. IEEE, 2018.
+
+\bibitem{bosshart2014p4}
+Pat Bosshart, Dan Daly, Glen Gibb, Martin Izzard, Nick McKeown, Jennifer
+  Rexford, Cole Schlesinger, Dan Talayco, Amin Vahdat, George Varghese, et~al.
+\newblock P4: Programming protocol-independent packet processors.
+\newblock {\em ACM SIGCOMM Computer Communication Review}, 44(3):87--95, 2014.
+
+\bibitem{Bianchi2014}
+Giuseppe Bianchi, Marco Bonola, Antonio Capone, and Carmelo Cascone.
+\newblock {Openstate: Programming platform-independent stateful openflow
+  applications inside the switch}.
+\newblock {\em Computer Communication Review}, 44(2):44--51, 2014.
+
+\bibitem{Sun2017}
+Chen Sun, Jun Bi, Haoxian Chen, Hongxin Hu, Zhilong Zheng, Shuyong Zhu, and
+  Chenghui Wu.
+\newblock {SDPA: Toward a Stateful Data Plane in Software-Defined Networking}.
+\newblock {\em IEEE/ACM Transactions on Networking}, 25(6):3294--3308, 2017.
+
+\bibitem{Li2016}
+Bojie Li, Kun Tan, Layong Luo, Yanqing Peng, Renqian Luo, Ningyi Xu, Yongqiang
+  Xiong, Peng Cheng, and Enhong Chen.
+\newblock {ClickNP: Highly flexible and high performance network processing
+  with reconfigurable hardware}.
+\newblock {\em SIGCOMM 2016 - Proceedings of the 2016 ACM Conference on Special
+  Interest Group on Data Communication}, pages 1--14, 2016.
+
+\bibitem{sun2017hyper}
+Chen Sun, Jun Bi, Zhilong Zheng, and Hongxin Hu.
+\newblock Hyper: A hybrid high-performance framework for network function
+  virtualization.
+\newblock {\em IEEE Journal on Selected Areas in Communications},
+  35(11):2490--2500, 2017.
+
+\bibitem{hancock2016hyper4}
+David Hancock and Jacobus Van~der Merwe.
+\newblock Hyper4: Using p4 to virtualize the programmable data plane.
+\newblock In {\em Proceedings of the 12th International on Conference on
+  emerging Networking EXperiments and Technologies}, pages 35--49, 2016.
+
+\bibitem{zhang2019hypervdp}
+Cheng Zhang, Jun Bi, Yu~Zhou, and Jianping Wu.
+\newblock Hypervdp: High-performance virtualization of the programmable data
+  plane.
+\newblock {\em IEEE Journal on Selected Areas in Communications},
+  37(3):556--569, 2019.
+
+\bibitem{Gember-Jacobson2015}
+Aaron Gember-Jacobson, Raajay Viswanathan, Chaithan Prakash, Robert Grandl,
+  Junaid Khalid, Sourav Das, and Aditya Akella.
+\newblock {OpenNF: Enabling innovation in network function control}.
+\newblock {\em Computer Communication Review}, 44(4):163--174, 2015.
+
+\bibitem{Dargahi2017}
+Tooska Dargahi, Alberto Caponi, Moreno Ambrosin, Giuseppe Bianchi, and Mauro
+  Conti.
+\newblock {A Survey on the Security of Stateful SDN Data Planes}.
+\newblock {\em IEEE Communications Surveys and Tutorials}, 19(3):1701--1725,
+  2017.
+
+\bibitem{fujisawa2002sdpa}
+Katsuki Fujisawa, Masakazu Kojima, Kazuhide Nakata, and Makoto Yamashita.
+\newblock Sdpa (semidefinite programming algorithm) user’s manual—version
+  6.2. 0.
+\newblock {\em Department of Mathematical and Com-puting Sciences, Tokyo
+  Institute of Technology. Research Reports on Mathematical and Computing
+  Sciences Series B: Operations Research}, 2002.
+
+\bibitem{xu2016demystifying}
+Zhifeng Xu, Fangming Liu, Tao Wang, and Hong Xu.
+\newblock Demystifying the energy efficiency of network function
+  virtualization.
+\newblock In {\em 2016 IEEE/ACM 24th International Symposium on Quality of
+  Service (IWQoS)}, pages 1--10. IEEE, 2016.
+
+\bibitem{zheng2018p4visor}
+Peng Zheng, Theophilus Benson, and Chengchen Hu.
+\newblock P4visor: Lightweight virtualization and composition primitives for
+  building and testing modular programs.
+\newblock In {\em Proceedings of the 14th International Conference on emerging
+  Networking EXperiments and Technologies}, pages 98--111, 2018.
+
+\end{thebibliography}
